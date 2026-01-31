@@ -1,0 +1,255 @@
+@import "tailwindcss";
+
+/* ============================================
+   BASE LAYER - Lowest specificity
+   ============================================ */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html, body {
+    height: 100%;
+    background-color: #0B0F14;
+    color: #e2e8f0;
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-height: 100%;
+  }
+}
+
+/* ============================================
+   COMPONENTS LAYER
+   ============================================ */
+@layer components {
+  /* Leaflet Map */
+  .leaflet-container {
+    height: 100%;
+    width: 100%;
+    font-family: inherit;
+    background-color: #0A0D10;
+  }
+
+  .leaflet-tooltip {
+    background: rgba(14, 17, 22, 0.98) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(50, 58, 71, 0.6) !important;
+    border-radius: 12px !important;
+    padding: 14px 18px !important;
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+    color: #CBD5E1 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4), 0 12px 24px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .leaflet-tooltip::before,
+  .leaflet-tooltip::after {
+    display: none !important;
+    border: none !important;
+  }
+
+  .leaflet-tooltip .tooltip-neighborhood {
+    color: #f1f5f9 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    margin-bottom: 10px !important;
+    padding-bottom: 8px !important;
+    border-bottom: 1px solid rgba(50, 58, 71, 0.5) !important;
+  }
+
+  .leaflet-tooltip .tooltip-label {
+    color: #64748b !important;
+    font-size: 10px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    font-weight: 500 !important;
+  }
+
+  .leaflet-tooltip .tooltip-value {
+    color: #22d3ee !important;
+    font-weight: 600 !important;
+    font-family: ui-monospace, monospace !important;
+  }
+
+  .leaflet-control-attribution {
+    background: rgba(14, 17, 22, 0.8) !important;
+    color: #64748B !important;
+    font-size: 9px !important;
+  }
+
+  .leaflet-control-attribution a {
+    color: #64748B !important;
+  }
+
+  .leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+  }
+
+  .leaflet-control-zoom a {
+    background: #1B2029 !important;
+    color: #94A3B8 !important;
+    border: none !important;
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .leaflet-control-zoom a:hover {
+    background: #262C36 !important;
+    color: #22D3EE !important;
+  }
+
+  .leaflet-control-zoom-in {
+    border-bottom: 1px solid #323A47 !important;
+  }
+}
+
+/* ============================================
+   UTILITIES LAYER
+   ============================================ */
+@layer utilities {
+  .animate-pulse-ring {
+    animation: pulse-ring 2s ease-out infinite;
+  }
+}
+
+/* ============================================
+   KEYFRAMES & ANIMATIONS
+   ============================================ */
+
+/* Pulse ring animation for live indicators */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Signal pulse for precincts receiving new data */
+@keyframes precinct-signal-pulse {
+  0% {
+    filter: brightness(1);
+    stroke-width: 2px;
+    stroke: #00FFFF;
+  }
+  25% {
+    filter: brightness(2);
+    stroke-width: 3px;
+    stroke: #00FFFF;
+  }
+  50% {
+    filter: brightness(1.5);
+    stroke-width: 2px;
+    stroke: rgba(0, 255, 255, 0.8);
+  }
+  100% {
+    filter: brightness(1);
+    stroke-width: 1px;
+    stroke: rgba(0, 255, 255, 0.3);
+  }
+}
+
+/* Flash animation for new data */
+@keyframes precinct-flash {
+  0%, 100% {
+    fill-opacity: var(--base-opacity, 0.6);
+  }
+  50% {
+    fill-opacity: 0.95;
+  }
+}
+
+/* Fade in with scale - for modals */
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.2s ease-out forwards;
+}
+
+/* Fade in up - for content reveals */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.3s ease-out forwards;
+}
+
+/* Precinct signal pulse class */
+.precinct-signal-pulse {
+  animation: precinct-signal-pulse 1.5s ease-out forwards;
+}
+
+/* Precinct updating state */
+.precinct-updating {
+  animation: precinct-flash 0.5s ease-out 3;
+}
+
+/* Glow effect for high-activity precincts */
+.precinct-glow {
+  filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4));
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #323A47;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ============================================
+   FOCUS STYLES
+   ============================================ */
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #0A0D10, 0 0 0 4px #22D3EE;
+}
